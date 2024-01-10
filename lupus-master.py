@@ -102,7 +102,7 @@ while not vittoria:
             abitante.status = 'Morto'
             nessun_morto = False
             print(f'  --> {abitante.nome} è morto!')
-        elif 'Giustiziere' in abitante.indicato_da:
+        elif 'Giustiziere' in abitante.indicato_da or 'Boia' in abitante.indicato_da:
             abitante.status = 'Morto'
             nessun_morto = False
             print(f'  --> {abitante.nome} è morto!')
