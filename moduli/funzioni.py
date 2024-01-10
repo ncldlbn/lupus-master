@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import yaml
 import os
-from moduli.ruoli import Villico, Lupo, Cavaliere, Veggente, Giustiziere, Insinuo, Illusionista, Stregone, Matto, Boia
+from moduli.ruoli import Villico, Lupo, Cavaliere, Veggente, Giustiziere, Insinuo, Illusionista, Stregone, Matto, Boia, Wendigo
 
 class Villaggio:
     def __init__(self):
@@ -80,6 +80,8 @@ def assegnazione_ruoli(giocatori, lista_ruoli):
             nuovo_ruolo = Matto(ID, giocatori[ID])
         if ruoli[ID] == 'Boia':
             nuovo_ruolo = Boia(ID, giocatori[ID])
+        if ruoli[ID] == 'Wendigo':
+            nuovo_ruolo = Wendigo(ID, giocatori[ID])
         villaggio.abitanti.append(nuovo_ruolo)
     return villaggio
 
@@ -88,26 +90,33 @@ def recap(villaggio):
         print(f"{abitante.ID:<2} {abitante.nome:<10} {abitante.ruolo:<12} {abitante.status:<5}")
 
 def condizioni_vittoria(villaggio):
-    lupi_vivi = [lupi.status for lupi in villaggio.abitanti if lupi.ruolo == 'Lupo' and lupi.status == 'Vivo']
-    solitari_vivi = [solitari.ID for solitari in villaggio.abitanti if solitari.fazione == 'Rubavittoria' and solitari.status == 'Vivo']
-    altri_giocatori_vivi = [g.status for g in villaggio.abitanti if g.ruolo != 'Lupo' and g.fazione != 'Rubavittoria' and g.status == 'Vivo']
-    matto_morto_al_rogo = [matto for matto in villaggio.abitanti if matto.ruolo == 'Matto' and matto.al_rogo == True]
+    vivi = [g.ID for g in villaggio.abitanti if g.status == 'Vivo']
+    lupi_vivi = [lupi.ID for lupi in villaggio.abitanti if lupi.ruolo == 'Lupo' and lupi.status == 'Vivo']
+    wendigo_vivo = [w.ID for w in villaggio.abitanti if w.ruolo == 'Wendigo' and w.status == 'Vivo']
+    rubavittoria_vivi = [r.ID for r in villaggio.abitanti if r.fazione == 'Rubavittoria' and r.status == 'Vivo']
+    wendigo_vivo = [w.ID for w in villaggio.abitanti if w.ruolo == 'Wendigo' and w.status == 'Vivo']
+    altri_giocatori_vivi = [g.ID for g in villaggio.abitanti if g.ruolo != 'Lupo' and g.fazione != 'Rubavittoria' and g.status == 'Vivo']
+    matto_morto_al_rogo = [matto.ID for matto in villaggio.abitanti if matto.ruolo == 'Matto' and matto.al_rogo == True]
+    print(vivi)
+    print(wendigo_vivo)
     # condizione vittoria dei villici:
     #   sono morti tutti i lupi e tutti i personaggi solitari
-    if not lupi_vivi and not solitari_vivi:
+    if not lupi_vivi and not rubavittoria_vivi:
         os.system('clear')
         print('I villici vincono la partita!\n')
         return True
     # condizione vittoria dei lupi:
     #   sono morti tutti i personaggi solitari e il numero di lupi == numero altri giocatori
-    elif not solitari_vivi and (len(lupi_vivi) == len(altri_giocatori_vivi)):
+    elif not rubavittoria_vivi and (len(lupi_vivi) == len(altri_giocatori_vivi)):
         os.system('clear')
         print('I lupi vincono la partita!\n')
         return True
     # condizione vittoria dei personaggi solitari:
     #   ogni personaggio solitario ha delle proprie condizioni di vittoria
-    elif solitari_vivi:
-        pass
+    elif wendigo_vivo and len(vivi) == 2:
+        os.system('clear')
+        print('Il wendigo vince la partita!\n')
+        return True
     elif matto_morto_al_rogo:
         os.system('clear')
         print('Il matto vince la partita!\n')

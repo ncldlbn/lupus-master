@@ -98,20 +98,13 @@ while not vittoria:
     # risultato della notte
     nessun_morto = True
     for abitante in villaggio.abitanti:
-        if 'Lupo' in abitante.indicato_da and 'Cavaliere' not in abitante.indicato_da:
-            abitante.status = 'Morto'
+        if abitante.morte():
             nessun_morto = False
             print(f'  --> {abitante.nome} è morto!')
-        elif 'Giustiziere' in abitante.indicato_da or 'Boia' in abitante.indicato_da:
-            abitante.status = 'Morto'
-            nessun_morto = False
-            print(f'  --> {abitante.nome} è morto!')
+        # reset azione della notte appena trascorsa
+        abitante.indicato_da = []
     if nessun_morto:
         print('  --> Non è morto nessuno!')
-
-    # reset azione della notte appena trascorsa
-    for abitante in villaggio.abitanti:
-        abitante.indicato_da = []
 
     # verifica le condizioni di vittoria:
     if condizioni_vittoria(villaggio):
@@ -122,8 +115,9 @@ while not vittoria:
     print('GIORNO')
     print('-------------------------------')
     while True:
-        rogo = int(input("Giocatore da mandare al rogo: "))
+        rogo = input("Giocatore da mandare al rogo: ")
         if rogo:
+            rogo = int(rogo)
             abitante_al_rogo = next((x for x in villaggio.abitanti if x.ID == rogo), None)
             if abitante_al_rogo.status == 'Morto':
                 print('Giocatore non valido, è già morto!!')

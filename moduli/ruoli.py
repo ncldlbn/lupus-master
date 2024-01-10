@@ -16,6 +16,7 @@ class Villico(Giocatore):
        self.fazione = 'Buono'
        self.visto_come = 'Buono'
        self.priorita = 999
+       self.assassini = ['Giustiziere', 'Boia', 'Wendigo', 'Lupo']
        self.descrizione = '''
        Sei un semplice villico. 
        Durante la notte devi solo sperare di non essere sbranato dai lupi. 
@@ -24,6 +25,16 @@ class Villico(Giocatore):
        Vinci se tutti i lupi vengono eliminati.
        '''
 
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if 'Lupo' in check and 'Cavaliere' in self.indicato_da:
+            return False
+        elif check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
 class Lupo(Giocatore):
     def __init__(self, ID, nome):
        super().__init__(ID, nome)
@@ -31,6 +42,7 @@ class Lupo(Giocatore):
        self.fazione = 'Cattivo'
        self.visto_come = 'Cattivo'
        self.priorita = 50
+       self.assassini = ['Giustiziere', 'Wendigo']
        self.descrizione = '''
        Sei un lupo. Ogni notte, in accordo con gli altri lupi, decidete chi sbranare. 
        Durante il giorno, dovete cercare di sviare ogni sospetto e non farvi mandare al rogo dai villici.
@@ -57,7 +69,15 @@ class Lupo(Giocatore):
                 else:
                     print("Giocatore indicato non valido")
             else:
-                print("I lupi devono indicare un giocatore da uccidere: ")                
+                print("I lupi devono indicare un giocatore da uccidere: ")
+
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
 
 class Cavaliere(Giocatore):
     def __init__(self, ID, nome):
@@ -66,6 +86,7 @@ class Cavaliere(Giocatore):
        self.fazione = 'Buono'
        self.visto_come = 'Buono'
        self.priorita = 40
+       self.assassini = ['Giustiziere', 'Boia', 'Wendigo', 'Lupo']
 
     def indica(self, villaggio):
         if self.status == 'Vivo':
@@ -88,6 +109,16 @@ class Cavaliere(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if 'Lupo' in check and 'Cavaliere' in self.indicato_da:
+            return False
+        elif check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
 class Veggente(Giocatore):
     def __init__(self, ID, nome):
        super().__init__(ID, nome)
@@ -95,6 +126,7 @@ class Veggente(Giocatore):
        self.fazione = 'Buono'
        self.visto_come = 'Buono'
        self.priorita = 30
+       self.assassini = ['Giustiziere', 'Boia', 'Wendigo', 'Lupo']
        
     def indica(self, villaggio):
         if self.status == 'Vivo':
@@ -123,7 +155,17 @@ class Veggente(Giocatore):
                     print("Il veggente deve indicare un giocatore: ")
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
-        
+
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if 'Lupo' in check and 'Cavaliere' in self.indicato_da:
+            return False
+        elif check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
 class Giustiziere(Giocatore):
     def __init__(self, ID, nome):
        super().__init__(ID, nome)
@@ -132,6 +174,7 @@ class Giustiziere(Giocatore):
        self.visto_come = 'Buono'
        self.priorita = 150
        self.attivato = False
+       self.assassini = ['Boia', 'Wendigo', 'Lupo']
        
     def indica(self, villaggio):
         if self.status == 'Vivo':
@@ -152,7 +195,7 @@ class Giustiziere(Giocatore):
                         if altro_giocatore in giocatori_indicabili:
                             indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
                             indicato.indicato_da.append('Giustiziere')
-                            self.sparato = True
+                            self.attivato = True
                             break
                         else:
                             print("Giocatore indicato non valido")
@@ -161,6 +204,16 @@ class Giustiziere(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if 'Lupo' in check and 'Cavaliere' in self.indicato_da:
+            return False
+        elif check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
 class Insinuo(Giocatore):
     def __init__(self, ID, nome):
        super().__init__(ID, nome)
@@ -168,6 +221,7 @@ class Insinuo(Giocatore):
        self.fazione = 'Cattivo'
        self.visto_come = 'Buono'
        self.priorita = 20
+       self.assassini = ['Giustiziere', 'Wendigo']
 
     def indica(self, villaggio):
         if self.status == 'Vivo':
@@ -190,6 +244,14 @@ class Insinuo(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
 class Illusionista(Giocatore):
     def __init__(self, ID, nome):
        super().__init__(ID, nome)
@@ -197,6 +259,7 @@ class Illusionista(Giocatore):
        self.fazione = 'Cattivo'
        self.visto_come = 'Cattivo'
        self.priorita = 15
+       self.assassini = ['Giustiziere', 'Wendigo']
 
     def indica(self, villaggio):
         if self.status == 'Vivo':
@@ -216,6 +279,14 @@ class Illusionista(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
 class Stregone(Giocatore):
     def __init__(self, ID, nome):
        super().__init__(ID, nome)
@@ -224,10 +295,13 @@ class Stregone(Giocatore):
        self.visto_come = 'Cattivo'
        self.priorita = 10
        self.attivato = False
+       self.assassini = ['Giustiziere', 'Wendigo']
 
     def indica(self, villaggio):
         if self.status == 'Vivo':
-            if self.attivato == False:
+            if 'Illusionista' in self.indicato_da:
+                input(f"{self.ruolo}: ---- (BLOCCATO)")
+            elif self.attivato == False:
                 attiva = input(f"{self.ruolo} (y=attiva, ENTER=skip): ")
                 if attiva == 'y':
                     giocatori_indicabili = [altro_giocatore for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Vivo' and altro_giocatore.fazione == 'Buono']
@@ -239,6 +313,14 @@ class Stregone(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
 class Matto(Giocatore):
     def __init__(self, ID, nome):
        super().__init__(ID, nome)
@@ -246,4 +328,104 @@ class Matto(Giocatore):
        self.fazione = 'Rubavittoria'
        self.visto_come = 'Buono'
        self.priorita = 998
+       self.assassini = ['Giustiziere', 'Boia', 'Wendigo', 'Lupo']
 
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if 'Lupo' in check and 'Cavaliere' in self.indicato_da:
+            return False
+        elif check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
+class Boia(Giocatore):
+    def __init__(self, ID, nome):
+       super().__init__(ID, nome)
+       self.ruolo = 'Boia'
+       self.fazione = 'Cattivo'
+       self.visto_come = 'Cattivo'
+       self.priorita = 140
+       self.attivato = False
+       self.assassini = ['Giustiziere', 'Wendigo']
+
+    def indica(self, villaggio):
+        if self.status == 'Vivo':
+            if self.attivato == False:
+                # se il boia può agire
+                while True:
+                    if 'Illusionista' in self.indicato_da:
+                        input(f"{self.ruolo}: ---- (BLOCCATO)")
+                        break
+                    altro_giocatore = input(f"{self.ruolo}: ")
+                    if not altro_giocatore:
+                        # il boia può decidere di non agire
+                        break
+                    else:
+                        # se decide di agire
+                        altro_giocatore = int(altro_giocatore)
+                        giocatori_indicabili = [altro_giocatore.ID for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Vivo' and altro_giocatore.ruolo != 'Boia']
+                        if altro_giocatore in giocatori_indicabili:
+                            indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
+                            ruolo_indovinato = input('  --> Indovina il ruolo: ')
+                            if ruolo_indovinato == indicato.ruolo:
+                                indicato.indicato_da.append('Boia')
+                                self.attivato = True
+                            else:
+                                self.indicato_da.append('Boia')
+                            break
+                        else:
+                            print("Giocatore indicato non valido")
+            else:
+                input(f"{self.ruolo}: ---- (Azione già attivata)")
+        else:
+            input(f"{self.ruolo}: ---- (MORTO)")
+
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
+class Wendigo(Giocatore):
+    def __init__(self, ID, nome):
+       super().__init__(ID, nome)
+       self.ruolo = 'Wendigo'
+       self.fazione = 'Rubavittoria'
+       self.visto_come = 'Cattivo'
+       self.priorita = 130
+       self.assassini = ['Giustiziere', 'Boia']
+
+    def indica(self, villaggio):
+        if self.status == 'Vivo':
+            while True:
+                if 'Illusionista' in self.indicato_da or 'Stregone' in self.indicato_da:
+                    input(f"{self.ruolo}: ---- (BLOCCATO)")
+                    break
+                altro_giocatore = input(f"{self.ruolo}: ")
+                if altro_giocatore:
+                    altro_giocatore = int(altro_giocatore)
+                    giocatori_indicabili = [altro_giocatore.ID for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Vivo' and altro_giocatore.ruolo != 'Wendigo']
+                    if altro_giocatore in giocatori_indicabili:
+                        indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
+                        ruolo_indovinato = input('  --> Indovina il ruolo: ')
+                        if ruolo_indovinato == indicato.ruolo:
+                            indicato.indicato_da.append('Wendigo')
+                        break
+                    else:
+                        print("Giocatore indicato non valido")
+                else:
+                    print("Il Wendigo deve indicare un giocatore e può ucciderlo se indovina il suo ruolo:")
+        else:
+            input(f"{self.ruolo}: ---- (MORTO)")
+
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
