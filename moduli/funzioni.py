@@ -97,8 +97,6 @@ def condizioni_vittoria(villaggio):
     wendigo_vivo = [w.ID for w in villaggio.abitanti if w.ruolo == 'Wendigo' and w.status == 'Vivo']
     altri_giocatori_vivi = [g.ID for g in villaggio.abitanti if g.ruolo != 'Lupo' and g.fazione != 'Rubavittoria' and g.status == 'Vivo']
     matto_morto_al_rogo = [matto.ID for matto in villaggio.abitanti if matto.ruolo == 'Matto' and matto.al_rogo == True]
-    print(vivi)
-    print(wendigo_vivo)
     # condizione vittoria dei villici:
     #   sono morti tutti i lupi e tutti i personaggi solitari
     if not lupi_vivi and not rubavittoria_vivi:

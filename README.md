@@ -1,1 +1,27 @@
- 
+# Introduzione
+`lupus-master` è un software di supporto per giocare a *Lupus in Tabula*.
+
+Tiene traccia di tutto quello che succede e aiuta il master a dirigere la partita.
+Sono implementate tutte le regole del gioco, le condizioni di vittoria, le caratteristiche dei diversi ruoli e le loro interazioni.
+
+I ruoli implementati nella versione 1.0 sono:
+- Villico
+- Lupo
+- Veggente
+- Cavaliere
+- Giustiziere
+- Insinuo
+- Illusionista
+- Boia
+- Stregone
+- Matto
+- Wendigo
+
+## Installazione
+1. Verificare che sia installato python3
+2. da terminale digitare `git clone https://github.com/ncldlbn/lupus-master.git`
+
+## Uso
+1. Compilare il file `setup.yml` con i ruoli e i nomi dei giocatori che partecipano. 
+Il numero di ruoli deve coincidere con il numero dei giocatori.
+2. Avviare il software con il comando `python lupus-master.py` e seguire le istruzioni da terminale.
