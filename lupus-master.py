@@ -75,20 +75,21 @@ while not vittoria:
         if abitante.ruolo == 'Villico':
             continue
         if abitante.ruolo == 'Lupo':
-            # l'intera fazione dei lupi va chiamata una sola volta
-            if not lupi_già_chiamati:
-                # controllo se entrambi i lupi sono morti
-                lupi_vivi = [lupi.status for lupi in villaggio.abitanti if lupi.ruolo == 'Lupo' and lupi.status == 'Vivo']
-                if lupi_vivi:
-                    abitante.indica(villaggio)
-                    lupi_già_chiamati = True
-                else:
-                    while True:
-                        prompt = input(f"{abitante.ruolo}: ---- (MORTO)")
-                        if prompt:
-                            print('Entrambi i lupi sono morti e non possono indicare nessuno, premi ENTER e basta!')
-                        else:
-                            break             
+            if abitante.status == 'Vivo':
+                # l'intera fazione dei lupi va chiamata una sola volta
+                if not lupi_già_chiamati:
+                    # controllo se entrambi i lupi sono morti
+                    lupi_vivi = [lupi.status for lupi in villaggio.abitanti if lupi.ruolo == 'Lupo' and lupi.status == 'Vivo']
+                    if lupi_vivi:
+                        abitante.indica(villaggio)
+                        lupi_già_chiamati = True
+                    else:
+                        while True:
+                            prompt = input(f"{abitante.ruolo}: ---- (MORTO)")
+                            if prompt:
+                                print('Entrambi i lupi sono morti e non possono indicare nessuno, premi ENTER e basta!')
+                            else:
+                                break
         else:
             abitante.indica(villaggio)
 

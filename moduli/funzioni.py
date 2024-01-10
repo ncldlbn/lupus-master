@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import yaml
 import os
-from moduli.ruoli import Villico, Lupo, Cavaliere, Veggente, Giustiziere, Insinuo
+from moduli.ruoli import Villico, Lupo, Cavaliere, Veggente, Giustiziere, Insinuo, Illusionista
 
 class Villaggio:
     def __init__(self):
@@ -72,6 +72,8 @@ def assegnazione_ruoli(giocatori, lista_ruoli):
             nuovo_ruolo = Giustiziere(ID, giocatori[ID])
         if ruoli[ID] == 'Insinuo':
             nuovo_ruolo = Insinuo(ID, giocatori[ID])
+        if ruoli[ID] == 'Illusionista':
+            nuovo_ruolo = Illusionista(ID, giocatori[ID])
         villaggio.abitanti.append(nuovo_ruolo)
     return villaggio
 

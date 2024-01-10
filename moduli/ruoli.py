@@ -39,6 +39,12 @@ class Lupo(Giocatore):
 
     def indica(self, villaggio):
         while True:
+            # se sei stato bloccato dall'illusionista o dallo stregone oscuro:
+            n_lupi_vivi = [lupi.ID for lupi in villaggio.abitanti if lupi.ruolo == 'Lupo' and lupi.status == 'Vivo']
+            if len(n_lupi_vivi) == 1:
+                if 'Illusionista' in self.indicato_da or 'Stregone Oscuro' in self.indicato_da:
+                    input(f"{self.ruolo}: ---- (BLOCCATO)")
+                    break
             altro_giocatore = input(f"{self.ruolo}: ")
             if altro_giocatore:
                 altro_giocatore = int(altro_giocatore)
@@ -63,6 +69,9 @@ class Cavaliere(Giocatore):
     def indica(self, villaggio):
         if self.status == 'Vivo':
             while True:
+                if 'Illusionista' in self.indicato_da or 'Stregone Oscuro' in self.indicato_da:
+                    input(f"{self.ruolo}: ---- (BLOCCATO)")
+                    break
                 altro_giocatore = input(f"{self.ruolo}: ")
                 if altro_giocatore:
                     altro_giocatore = int(altro_giocatore)
@@ -89,6 +98,9 @@ class Veggente(Giocatore):
     def indica(self, villaggio):
         if self.status == 'Vivo':
             while True:
+                if 'Illusionista' in self.indicato_da or 'Stregone Oscuro' in self.indicato_da:
+                    input(f"{self.ruolo}: ---- (BLOCCATO)")
+                    break
                 altro_giocatore = input(f"{self.ruolo}: ")
                 if altro_giocatore:
                     altro_giocatore = int(altro_giocatore)
@@ -100,6 +112,8 @@ class Veggente(Giocatore):
                                 visione = 'Cattivo'
                             else:
                                 visione = 'Buono'
+                        else:
+                            visione = indicato.visto_come
                         print(f'  --> {indicato.nome} è {visione}')
                         break
                     else:
@@ -123,6 +137,9 @@ class Giustiziere(Giocatore):
             if self.sparato == False:
                 # se il gisutiziere può sparare
                 while True:
+                    if 'Illusionista' in self.indicato_da or 'Stregone Oscuro' in self.indicato_da:
+                        input(f"{self.ruolo}: ---- (BLOCCATO)")
+                        break
                     altro_giocatore = input(f"{self.ruolo}: ")
                     if not altro_giocatore:
                         # il giustiziere può decidere di non sparare
@@ -154,6 +171,9 @@ class Insinuo(Giocatore):
     def indica(self, villaggio):
         if self.status == 'Vivo':
             while True:
+                if 'Illusionista' in self.indicato_da or 'Stregone Oscuro' in self.indicato_da:
+                    input(f"{self.ruolo}: ---- (BLOCCATO)")
+                    break
                 altro_giocatore = input(f"{self.ruolo}: ")
                 if altro_giocatore:
                     altro_giocatore = int(altro_giocatore)
@@ -165,6 +185,32 @@ class Insinuo(Giocatore):
                     else:
                         print("Giocatore indicato non valido")
                 else:
-                    print("L'insinuo deve indicare un giocatore da da insinuare:")
+                    print("L'insinuo deve indicare un giocatore da insinuare:")
+        else:
+            input(f"{self.ruolo}: ---- (MORTO)")
+
+class Illusionista(Giocatore):
+    def __init__(self, ID, nome):
+       super().__init__(ID, nome)
+       self.ruolo = 'Illusionista'
+       self.fazione = 'Cattivo'
+       self.visto_come = 'Cattivo'
+       self.priorita = 15
+
+    def indica(self, villaggio):
+        if self.status == 'Vivo':
+            while True:
+                altro_giocatore = input(f"{self.ruolo}: ")
+                if altro_giocatore:
+                    altro_giocatore = int(altro_giocatore)
+                    giocatori_indicabili = [altro_giocatore.ID for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Vivo' and altro_giocatore.ruolo != 'Illusionista']
+                    if altro_giocatore in giocatori_indicabili:
+                        indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
+                        indicato.indicato_da.append('Illusionista')
+                        break
+                    else:
+                        print("Giocatore indicato non valido")
+                else:
+                    print("L'illusionista deve indicare un giocatore da bloccare per questo turno:")
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
