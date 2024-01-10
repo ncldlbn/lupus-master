@@ -95,7 +95,12 @@ class Veggente(Giocatore):
                     giocatori_indicabili = [altro_giocatore.ID for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Vivo' and altro_giocatore.ruolo != 'Veggente']
                     if altro_giocatore in giocatori_indicabili:
                         indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
-                        print(f'  --> {indicato.nome} è {indicato.visto_come}')
+                        if 'Insinuo' in indicato.indicato_da:
+                            if indicato.visto_come == 'Buono':
+                                visione = 'Cattivo'
+                            else:
+                                visione = 'Buono'
+                        print(f'  --> {indicato.nome} è {visione}')
                         break
                     else:
                         print("Giocatore indicato non valido")
@@ -135,5 +140,31 @@ class Giustiziere(Giocatore):
                             print("Giocatore indicato non valido")
             else:
                 input(f"{self.ruolo}: ---- (Azione già attivata)")
+        else:
+            input(f"{self.ruolo}: ---- (MORTO)")
+
+class Insinuo(Giocatore):
+    def __init__(self, ID, nome):
+       super().__init__(ID, nome)
+       self.ruolo = 'Insinuo'
+       self.fazione = 'Cattivo'
+       self.visto_come = 'Buono'
+       self.priorita = 20
+
+    def indica(self, villaggio):
+        if self.status == 'Vivo':
+            while True:
+                altro_giocatore = input(f"{self.ruolo}: ")
+                if altro_giocatore:
+                    altro_giocatore = int(altro_giocatore)
+                    giocatori_indicabili = [altro_giocatore.ID for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Vivo' and altro_giocatore.ruolo != 'Insinuo']
+                    if altro_giocatore in giocatori_indicabili:
+                        indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
+                        indicato.indicato_da.append('Insinuo')
+                        break
+                    else:
+                        print("Giocatore indicato non valido")
+                else:
+                    print("L'insinuo deve indicare un giocatore da da insinuare:")
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
