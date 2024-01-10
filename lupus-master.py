@@ -74,6 +74,8 @@ while not vittoria:
     for abitante in sorted(villaggio.abitanti, key=lambda x: x.priorita):
         if abitante.ruolo == 'Villico':
             continue
+        if abitante.ruolo == 'Matto':
+            continue
         if abitante.ruolo == 'Lupo':
             if abitante.status == 'Vivo':
                 # l'intera fazione dei lupi va chiamata una sola volta
@@ -127,6 +129,7 @@ while not vittoria:
                 print('Giocatore non valido, è già morto!!')
             else:
                 abitante_al_rogo.status = 'Morto'
+                abitante_al_rogo.al_rogo = True
                 break
         else:
             print("Inserisci l'ID di un giocatore da mandare al rogo: ")

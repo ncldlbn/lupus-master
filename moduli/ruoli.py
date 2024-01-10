@@ -7,6 +7,7 @@ class Giocatore:
         self.nome = nome
         self.status = 'Vivo'
         self.indicato_da = []
+        self.al_rogo = False
         
 class Villico(Giocatore):
     def __init__(self, ID, nome):
@@ -237,3 +238,12 @@ class Stregone(Giocatore):
                 input(f"{self.ruolo}: ---- (Azione già attivata)")
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
+
+class Matto(Giocatore):
+    def __init__(self, ID, nome):
+       super().__init__(ID, nome)
+       self.ruolo = 'Matto'
+       self.fazione = 'Rubavittoria'
+       self.visto_come = 'Buono'
+       self.priorita = 998
+

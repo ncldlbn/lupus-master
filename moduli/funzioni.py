@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import yaml
 import os
-from moduli.ruoli import Villico, Lupo, Cavaliere, Veggente, Giustiziere, Insinuo, Illusionista, Stregone
+from moduli.ruoli import Villico, Lupo, Cavaliere, Veggente, Giustiziere, Insinuo, Illusionista, Stregone, Matto
 
 class Villaggio:
     def __init__(self):
@@ -76,6 +76,8 @@ def assegnazione_ruoli(giocatori, lista_ruoli):
             nuovo_ruolo = Illusionista(ID, giocatori[ID])
         if ruoli[ID] == 'Stregone':
             nuovo_ruolo = Stregone(ID, giocatori[ID])
+        if ruoli[ID] == 'Matto':
+            nuovo_ruolo = Matto(ID, giocatori[ID])
         villaggio.abitanti.append(nuovo_ruolo)
     return villaggio
 
@@ -85,8 +87,9 @@ def recap(villaggio):
 
 def condizioni_vittoria(villaggio):
     lupi_vivi = [lupi.status for lupi in villaggio.abitanti if lupi.ruolo == 'Lupo' and lupi.status == 'Vivo']
-    solitari_vivi = [solitari.status for solitari in villaggio.abitanti if solitari.fazione == 'Solitario' and solitari.status == 'Vivo']
-    altri_giocatori_vivi = [g.status for g in villaggio.abitanti if g.ruolo != 'Lupo' and g.fazione != 'Solitario' and g.status == 'Vivo']
+    solitari_vivi = [solitari.ID for solitari in villaggio.abitanti if solitari.fazione == 'Rubavittoria' and solitari.status == 'Vivo']
+    altri_giocatori_vivi = [g.status for g in villaggio.abitanti if g.ruolo != 'Lupo' and g.fazione != 'Rubavittoria' and g.status == 'Vivo']
+    matto_morto_al_rogo = [matto for matto in villaggio.abitanti if matto.ruolo == 'Matto' and matto.al_rogo == True]
     # condizione vittoria dei villici:
     #   sono morti tutti i lupi e tutti i personaggi solitari
     if not lupi_vivi and not solitari_vivi:
@@ -102,9 +105,10 @@ def condizioni_vittoria(villaggio):
     # condizione vittoria dei personaggi solitari:
     #   ogni personaggio solitario ha delle proprie condizioni di vittoria
     elif solitari_vivi:
-        for p in solitari_vivi:
-            if p.vittoria:
-                print(f'Il {p.ruolo} vince la partita!\n')
-                return True
+        pass
+    elif matto_morto_al_rogo:
+        os.system('clear')
+        print('Il matto vince la partita!\n')
+        return True
     else:
         return False
