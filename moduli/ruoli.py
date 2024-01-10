@@ -42,7 +42,7 @@ class Lupo(Giocatore):
             # se sei stato bloccato dall'illusionista o dallo stregone oscuro:
             n_lupi_vivi = [lupi.ID for lupi in villaggio.abitanti if lupi.ruolo == 'Lupo' and lupi.status == 'Vivo']
             if len(n_lupi_vivi) == 1:
-                if 'Illusionista' in self.indicato_da or 'Stregone Oscuro' in self.indicato_da:
+                if 'Illusionista' in self.indicato_da or 'Stregone' in self.indicato_da:
                     input(f"{self.ruolo}: ---- (BLOCCATO)")
                     break
             altro_giocatore = input(f"{self.ruolo}: ")
@@ -69,7 +69,7 @@ class Cavaliere(Giocatore):
     def indica(self, villaggio):
         if self.status == 'Vivo':
             while True:
-                if 'Illusionista' in self.indicato_da or 'Stregone Oscuro' in self.indicato_da:
+                if 'Illusionista' in self.indicato_da or 'Stregone' in self.indicato_da:
                     input(f"{self.ruolo}: ---- (BLOCCATO)")
                     break
                 altro_giocatore = input(f"{self.ruolo}: ")
@@ -98,7 +98,7 @@ class Veggente(Giocatore):
     def indica(self, villaggio):
         if self.status == 'Vivo':
             while True:
-                if 'Illusionista' in self.indicato_da or 'Stregone Oscuro' in self.indicato_da:
+                if 'Illusionista' in self.indicato_da or 'Stregone' in self.indicato_da:
                     input(f"{self.ruolo}: ---- (BLOCCATO)")
                     break
                 altro_giocatore = input(f"{self.ruolo}: ")
@@ -130,14 +130,14 @@ class Giustiziere(Giocatore):
        self.fazione = 'Buono'
        self.visto_come = 'Buono'
        self.priorita = 150
-       self.sparato = False
+       self.attivato = False
        
     def indica(self, villaggio):
         if self.status == 'Vivo':
-            if self.sparato == False:
+            if self.attivato == False:
                 # se il gisutiziere può sparare
                 while True:
-                    if 'Illusionista' in self.indicato_da or 'Stregone Oscuro' in self.indicato_da:
+                    if 'Illusionista' in self.indicato_da or 'Stregone' in self.indicato_da:
                         input(f"{self.ruolo}: ---- (BLOCCATO)")
                         break
                     altro_giocatore = input(f"{self.ruolo}: ")
@@ -171,7 +171,7 @@ class Insinuo(Giocatore):
     def indica(self, villaggio):
         if self.status == 'Vivo':
             while True:
-                if 'Illusionista' in self.indicato_da or 'Stregone Oscuro' in self.indicato_da:
+                if 'Illusionista' in self.indicato_da or 'Stregone' in self.indicato_da:
                     input(f"{self.ruolo}: ---- (BLOCCATO)")
                     break
                 altro_giocatore = input(f"{self.ruolo}: ")
@@ -212,5 +212,28 @@ class Illusionista(Giocatore):
                         print("Giocatore indicato non valido")
                 else:
                     print("L'illusionista deve indicare un giocatore da bloccare per questo turno:")
+        else:
+            input(f"{self.ruolo}: ---- (MORTO)")
+
+class Stregone(Giocatore):
+    def __init__(self, ID, nome):
+       super().__init__(ID, nome)
+       self.ruolo = 'Stregone'
+       self.fazione = 'Cattivo'
+       self.visto_come = 'Cattivo'
+       self.priorita = 10
+       self.attivato = False
+
+    def indica(self, villaggio):
+        if self.status == 'Vivo':
+            if self.attivato == False:
+                attiva = input(f"{self.ruolo} (y=attiva, ENTER=skip): ")
+                if attiva == 'y':
+                    giocatori_indicabili = [altro_giocatore for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Vivo' and altro_giocatore.fazione == 'Buono']
+                    for giocatore in giocatori_indicabili:
+                        giocatore.indicato_da.append('Stregone')
+                    self.attivato = True
+            else:
+                input(f"{self.ruolo}: ---- (Azione già attivata)")
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
