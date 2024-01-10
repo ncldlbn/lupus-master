@@ -28,25 +28,25 @@ input('Premi ENTER per iniziare una nuova partita...')
 # -----------------------------------------------------------------------------
 
 os.system('clear')
-print('-------------------------------')
+print('----------------------------------')
 print("TURNO 0")
-print('-------------------------------')
+print('----------------------------------')
 
 ruoli, giocatori = read_setup('setup.yml')
 for numero, nome in giocatori.items():
     print(f"{numero} - {nome}", end="\n")
 
-print('-------------------------------')
+print('----------------------------------')
 print('NOTTE')
-print('-------------------------------')
+print('----------------------------------')
     
 villaggio = assegnazione_ruoli(giocatori, ruoli)
 
-print('-------------------------------')
+print('----------------------------------')
 print('GIORNO')
-print('-------------------------------')
+print('----------------------------------')
 input('Nominate un SINDACO del villaggio...')
-print('-------------------------------')
+print('----------------------------------')
 
 input("\nPremi ENTER per passare alla notte successiva...")
 
@@ -59,15 +59,15 @@ turno = 1
 while not vittoria:
     os.system('clear')
 
-    print('-------------------------------')
+    print('----------------------------------')
     print(f'TURNO {turno}')
-    print('-------------------------------')
+    print('----------------------------------')
 
     recap(villaggio)
 
-    print('-------------------------------')
+    print('----------------------------------')
     print('NOTTE')
-    print('-------------------------------')
+    print('----------------------------------')
 
     # durante la notte chiama i ruoli in ordine di priorità. Escludi i Villici
     lupi_già_chiamati = False
@@ -111,9 +111,9 @@ while not vittoria:
         break
 
     # Votazione del giorno
-    print('-------------------------------')
+    print('----------------------------------')
     print('GIORNO')
-    print('-------------------------------')
+    print('----------------------------------')
     while True:
         rogo = input("Giocatore da mandare al rogo: ")
         if rogo:
@@ -129,7 +129,9 @@ while not vittoria:
             print("Inserisci l'ID di un giocatore da mandare al rogo: ")
     
     print(f'  --> {abitante_al_rogo.nome} è stato mandato al rogo')
-    print('-------------------------------')
+    print('----------------------------------')
+
+    input("\nPremi ENTER per passare alla notte successiva...")
 
     # verifica le condizioni di vittoria:
     if condizioni_vittoria(villaggio):
@@ -137,10 +139,8 @@ while not vittoria:
 
     turno = turno + 1
 
-    input("\nPremi ENTER per passare alla notte successiva...")
-
 # in caso di vittoria:
 input('Premi ENTER per visualizzare il recap...')
-print('-------------------------------')
+print('----------------------------------')
 recap(villaggio)
-print('-------------------------------')
+print('----------------------------------')

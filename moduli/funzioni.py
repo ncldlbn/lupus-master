@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import yaml
 import os
-from moduli.ruoli import Villico, Lupo, Cavaliere, Veggente, Giustiziere, Insinuo, Illusionista, Stregone, Matto, Boia, Wendigo
+from moduli.ruoli import *
 
 class Villaggio:
     def __init__(self):
@@ -42,6 +42,7 @@ def inputID_init(ruolo, giocatori):
 def assegnazione_ruoli(giocatori, lista_ruoli):
     villaggio = Villaggio()
     ruoli = {}
+
     # Assegnazione ruoli
     for ruolo in lista_ruoli:
         if ruolo == 'Villico':
@@ -54,10 +55,12 @@ def assegnazione_ruoli(giocatori, lista_ruoli):
                 else:
                     ruoli[ID] = ruolo
                     break
+
     # assegnazione villici
     for ID in giocatori.keys():
         if ID not in ruoli.keys():
             ruoli[ID] = 'Villico'
+
     # assegnazione abitanti al villaggio
     for ID in giocatori.keys():
         if ruoli[ID] == 'Lupo':
@@ -82,12 +85,14 @@ def assegnazione_ruoli(giocatori, lista_ruoli):
             nuovo_ruolo = Boia(ID, giocatori[ID])
         if ruoli[ID] == 'Wendigo':
             nuovo_ruolo = Wendigo(ID, giocatori[ID])
+        if ruoli[ID] == 'Ammaestratore':
+            nuovo_ruolo = Ammaestratore(ID, giocatori[ID])
         villaggio.abitanti.append(nuovo_ruolo)
     return villaggio
 
 def recap(villaggio):
     for abitante in villaggio.abitanti:
-        print(f"{abitante.ID:<2} {abitante.nome:<10} {abitante.ruolo:<12} {abitante.status:<5}")
+        print(f"{abitante.ID:<2} {abitante.nome:<10} {abitante.ruolo:<15} {abitante.status:<5}")
 
 def condizioni_vittoria(villaggio):
     vivi = [g.ID for g in villaggio.abitanti if g.status == 'Vivo']
