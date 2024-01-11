@@ -29,6 +29,7 @@ I ruoli implementati nella versione 1.0 sono:
 ## Installazione
 1. Verificare che sia installato python3
 2. da terminale digitare `git clone https://github.com/ncldlbn/lupus-master.git`
+3. da terminale digitare `pip install requirements.txt`
 
 ## Uso
 1. Compilare il file `setup.yml` con i ruoli e i nomi dei giocatori che partecipano. 
