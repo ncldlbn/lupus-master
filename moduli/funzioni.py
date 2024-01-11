@@ -74,6 +74,8 @@ def assegnazione_ruoli(giocatori, lista_ruoli):
             nuovo_ruolo = Veggente(ID, giocatori[ID])
         if ruoli[ID] == 'Medium':
             nuovo_ruolo = Medium(ID, giocatori[ID])
+        if ruoli[ID] == 'Beccamorto':
+            nuovo_ruolo = Beccamorto(ID, giocatori[ID])
         if ruoli[ID] == 'Giustiziere':
             nuovo_ruolo = Giustiziere(ID, giocatori[ID])
         if ruoli[ID] == 'Insinuo':
