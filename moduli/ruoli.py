@@ -168,6 +168,51 @@ class Veggente(Giocatore):
         else:
             return False
 
+class Medium(Giocatore):
+    def __init__(self, ID, nome):
+       super().__init__(ID, nome)
+       self.ruolo = 'Medium'
+       self.fazione = 'Buono'
+       self.visto_come = 'Buono'
+       self.priorita = 35
+       self.assassini = ['Giustiziere', 'Boia', 'Wendigo', 'Lupo', 'Ammaestratore']
+
+    def indica(self, villaggio):
+        if self.status == 'Vivo':
+            while True:
+                if 'Illusionista' in self.indicato_da or 'Stregone' in self.indicato_da:
+                    input(f"{self.ruolo}: ---- (BLOCCATO)")
+                    break
+                else:
+                    if villaggio.turno == 1:
+                        altro_giocatore = input(f"{self.ruolo}: ---- (NON ATTIVO)")
+                        break
+                    else:
+                        altro_giocatore = input(f"{self.ruolo}: ")
+                        if altro_giocatore:
+                            altro_giocatore = int(altro_giocatore)
+                            giocatori_indicabili = [altro_giocatore.ID for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Morto']
+                            if altro_giocatore in giocatori_indicabili:
+                                indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
+                                print(f'  --> {indicato.nome} è {indicato.visto_come}')
+                                break
+                            else:
+                                print("Giocatore indicato non valido")
+                        else:
+                            print("Il medium deve indicare un giocatore morto del quale vuole conoscere la fazione: ")
+        else:
+            input(f"{self.ruolo}: ---- (MORTO)")
+
+    def morte(self):
+        check = set(self.assassini) & set(self.indicato_da)
+        if ('Lupo' in check or 'Ammaestratore' in check) and 'Cavaliere' in self.indicato_da:
+            return False
+        elif check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
 class Giustiziere(Giocatore):
     def __init__(self, ID, nome):
        super().__init__(ID, nome)
@@ -177,7 +222,7 @@ class Giustiziere(Giocatore):
        self.priorita = 150
        self.attivato = False
        self.assassini = ['Boia', 'Wendigo', 'Lupo', 'Ammaestratore']
-       
+
     def indica(self, villaggio):
         if self.status == 'Vivo':
             if self.attivato == False:

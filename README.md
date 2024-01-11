@@ -8,6 +8,7 @@ I ruoli implementati nella versione 1.0 sono:
 - Villico
 - Lupo
 - Veggente
+- Medium
 - Cavaliere
 - Giustiziere
 - Insinuo
@@ -16,6 +17,7 @@ I ruoli implementati nella versione 1.0 sono:
 - Stregone
 - Matto
 - Wendigo
+- Ammaestratore
 
 ## Installazione
 1. Verificare che sia installato python3

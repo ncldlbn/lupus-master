@@ -7,6 +7,7 @@ from moduli.ruoli import *
 class Villaggio:
     def __init__(self):
         self.abitanti = []
+        self.turno = 1
 
 def read_setup(setup_file):
     ### Inserire controllo N ruoli == N Giocatori!!
@@ -71,6 +72,8 @@ def assegnazione_ruoli(giocatori, lista_ruoli):
             nuovo_ruolo = Cavaliere(ID, giocatori[ID])
         if ruoli[ID] == 'Veggente':
             nuovo_ruolo = Veggente(ID, giocatori[ID])
+        if ruoli[ID] == 'Medium':
+            nuovo_ruolo = Medium(ID, giocatori[ID])
         if ruoli[ID] == 'Giustiziere':
             nuovo_ruolo = Giustiziere(ID, giocatori[ID])
         if ruoli[ID] == 'Insinuo':

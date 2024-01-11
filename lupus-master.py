@@ -54,13 +54,13 @@ input("\nPremi ENTER per passare alla notte successiva...")
 # Inizio partita
 # -----------------------------------------------------------------------------
 vittoria = False
-turno = 1
+villaggio.turno = 1
 
 while not vittoria:
     os.system('clear')
 
     print('----------------------------------')
-    print(f'TURNO {turno}')
+    print(f'TURNO {villaggio.turno}')
     print('----------------------------------')
 
     recap(villaggio)
@@ -137,7 +137,7 @@ while not vittoria:
     if condizioni_vittoria(villaggio):
         break
 
-    turno = turno + 1
+    villaggio.turno += 1
 
 # in caso di vittoria:
 input('Premi ENTER per visualizzare il recap...')
