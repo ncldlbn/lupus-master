@@ -25,7 +25,7 @@ class Villico(Giocatore):
        Vinci se tutti i lupi vengono eliminati.
        '''
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if ('Lupo' in check or 'Ammaestratore' in check) and 'Cavaliere' in self.indicato_da:
             return False
@@ -71,7 +71,7 @@ class Lupo(Giocatore):
             else:
                 print("I lupi devono indicare un giocatore da uccidere: ")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if 'Ammaestratore' in check and 'Cavaliere' in self.indicato_da:
             return False
@@ -111,7 +111,7 @@ class Cavaliere(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if ('Lupo' in check or 'Ammaestratore' in check) and 'Cavaliere' in self.indicato_da:
             return False
@@ -158,7 +158,7 @@ class Veggente(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if ('Lupo' in check or 'Ammaestratore' in check) and 'Cavaliere' in self.indicato_da:
             return False
@@ -236,7 +236,7 @@ class Beccamorto(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if ('Lupo' in check or 'Ammaestratore' in check) and 'Cavaliere' in self.indicato_da:
             return False
@@ -284,7 +284,7 @@ class Giustiziere(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if ('Lupo' in check or 'Ammaestratore' in check) and 'Cavaliere' in self.indicato_da:
             return False
@@ -324,7 +324,7 @@ class Insinuo(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if 'Ammaestratore' and 'Cavaliere' in self.indicato_da:
             return False
@@ -361,7 +361,7 @@ class Illusionista(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if 'Ammaestratore' and 'Cavaliere' in self.indicato_da:
             return False
@@ -397,7 +397,7 @@ class Stregone(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if 'Ammaestratore' in check and 'Cavaliere' in self.indicato_da:
             return False
@@ -416,7 +416,7 @@ class Matto(Giocatore):
        self.priorita = 998
        self.assassini = ['Giustiziere', 'Boia', 'Wendigo', 'Lupo', 'Ammaestratore']
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if ('Lupo' in check or 'Ammaestratore' in check) and 'Cavaliere' in self.indicato_da:
             return False
@@ -474,7 +474,7 @@ class Boia(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if 'Ammaestratore' in check and 'Cavaliere' in self.indicato_da:
             return False
@@ -522,7 +522,7 @@ class Wendigo(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if check:
             self.status = 'Morto'
@@ -536,7 +536,7 @@ class Ammaestratore(Giocatore):
        self.ruolo = 'Ammaestratore'
        self.fazione = 'Buono'
        self.visto_come = 'Buono'
-       self.priorita = 40
+       self.priorita = 55
        self.assassini = ['Giustiziere', 'Boia', 'Wendigo', 'Lupo']
        self.attivato = False
        self.descrizione = '''
@@ -571,9 +571,104 @@ class Ammaestratore(Giocatore):
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
-    def morte(self):
+    def morte(self, villaggio):
         check = set(self.assassini) & set(self.indicato_da)
         if check:
+            self.status = 'Morto'
+            return True
+        else:
+            return False
+
+class Indemoniato(Giocatore):
+    def __init__(self, ID, nome):
+       super().__init__(ID, nome)
+       self.ruolo = 'Indemoniato'
+       self.fazione = 'Buono'
+       self.visto_come = 'Buono'
+       self.priorita = 60
+       self.assassini = ['Giustiziere', 'Boia', 'Wendigo']
+       self.descrizione = '''
+       '''
+
+    def indica(self, villaggio):
+        if self.status == 'Vivo':
+            if 'Lupo' in self.indicato_da or 'Ammaestratore' in self.indicato_da:
+                input(f"{self.ruolo}: ---- (Ti sei trasformato in lupo)")
+            else:
+                input(f"{self.ruolo}: ---- (Rimani villico)")
+        else:
+            input(f"{self.ruolo}: ---- (MORTO)")
+
+    def morte(self, villaggio):
+        check = set(self.assassini) & set(self.indicato_da)
+        if check:
+            self.status = 'Morto'
+            return True
+        elif self.status == 'Vivo' and ('Lupo' in self.indicato_da or 'Ammaestratore' in self.indicato_da):
+            print("  --> L'indemoniato si è trasformato in lupo")
+            self.cambio_ruolo(villaggio)
+            return False
+        else:
+            return False
+
+    def cambio_ruolo(self, villaggio):
+        # Cambia il ruolo da Indemoniato a Lupo
+        nuovo_ruolo = Lupo(self.ID, self.nome)
+        # Rimuovi l'Indemoniato dalla lista degli abitanti e aggiungi il nuovo Lupo
+        villaggio.abitanti.remove(self)
+        villaggio.abitanti.append(nuovo_ruolo)
+        return True
+
+class Mitomane(Giocatore):
+    def __init__(self, ID, nome):
+       super().__init__(ID, nome)
+       self.ruolo = 'Mitomane'
+       self.fazione = 'Buono'
+       self.visto_come = 'Buono'
+       self.priorita = 1
+       self.assassini = ['Giustiziere', 'Boia', 'Wendigo', 'Lupo', 'Ammaestratore']
+       self.descrizione = '''
+       '''
+
+    def indica(self, villaggio):
+        pass
+        if self.status == 'Vivo':
+            while True:
+                if 'Illusionista' in self.indicato_da or 'Stregone' in self.indicato_da:
+                    input(f"{self.ruolo}: ---- (BLOCCATO)")
+                    break
+                else:
+                    if villaggio.turno < 2:
+                        altro_giocatore = input(f"{self.ruolo}: ---- (NON ATTIVO)")
+                        break
+                    else:
+                        altro_giocatore = input(f"{self.ruolo}: ")
+                        if altro_giocatore:
+                            altro_giocatore = int(altro_giocatore)
+                            giocatori_indicabili = [altro_giocatore.ID for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Vivo']
+                            if altro_giocatore in giocatori_indicabili:
+                                indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
+                                if indicato.ruolo == 'Veggente':
+                                    nuovo_ruolo = Veggente(self.ID, self.nome)
+                                elif indicato.ruolo == 'Lupo':
+                                    nuovo_ruolo = Lupo(self.ID, self.nome)
+                                else:
+                                    nuovo_ruolo = Villico(self.ID, self.nome)
+                                villaggio.abitanti.remove(self)
+                                villaggio.abitanti.append(nuovo_ruolo)
+                                break
+                            else:
+                                print("Giocatore indicato non valido")
+                        else:
+                            print("Il mitomane deve indicare un giocatore per diventare lupo o veggente: ")
+        else:
+            input(f"{self.ruolo}: ---- (MORTO)")
+
+    def morte(self, villaggio):
+        check = set(self.assassini) & set(self.indicato_da)
+        if ('Lupo' in check or 'Ammaestratore' in check) and 'Cavaliere' in self.indicato_da:
+            return False
+        elif check:
             self.status = 'Morto'
             return True
         else:

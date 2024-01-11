@@ -94,6 +94,10 @@ def assegnazione_ruoli(giocatori, lista_ruoli):
             nuovo_ruolo = Wendigo(ID, giocatori[ID])
         if ruoli[ID] == 'Ammaestratore':
             nuovo_ruolo = Ammaestratore(ID, giocatori[ID])
+        if ruoli[ID] == 'Indemoniato':
+            nuovo_ruolo = Indemoniato(ID, giocatori[ID])
+        if ruoli[ID] == 'Mitomane':
+            nuovo_ruolo = Mitomane(ID, giocatori[ID])
         villaggio.abitanti.append(nuovo_ruolo)
 
     villaggio.giocatori = giocatori
@@ -101,7 +105,7 @@ def assegnazione_ruoli(giocatori, lista_ruoli):
     return villaggio
 
 def recap(villaggio):
-    for abitante in villaggio.abitanti:
+    for abitante in sorted(villaggio.abitanti, key=lambda x: x.ID):
         print(f"{abitante.ID:<2} {abitante.nome:<10} {abitante.ruolo:<15} {abitante.status:<5}")
 
 def condizioni_vittoria(villaggio):

@@ -5,19 +5,25 @@ Tiene traccia di tutto quello che succede e aiuta il master a dirigere la partit
 Sono implementate tutte le regole del gioco, le condizioni di vittoria, le caratteristiche dei diversi ruoli e le loro interazioni.
 
 I ruoli implementati nella versione 1.0 sono:
-- Villico
-- Lupo
-- Veggente
-- Medium
-- Cavaliere
-- Giustiziere
-- Insinuo
-- Illusionista
-- Boia
-- Stregone
-- Matto
-- Wendigo
-- Ammaestratore
+- Buoni
+  - Villico
+  - Veggente
+  - Cavaliere
+  - Giustiziere
+  - Ammaestratore
+  - Mitomane
+  - Medium
+  - Beccamorto
+- Cattivi
+  - Lupo
+  - Indemoniato
+  - Insinuo
+  - Illusionista
+  - Boia
+  - Stregone
+- Rubavittoria
+  - Matto
+  - Wendigo
 
 ## Installazione
 1. Verificare che sia installato python3

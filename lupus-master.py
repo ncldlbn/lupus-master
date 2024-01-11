@@ -98,7 +98,7 @@ while not vittoria:
     # risultato della notte
     nessun_morto = True
     for abitante in villaggio.abitanti:
-        if abitante.morte():
+        if abitante.morte(villaggio):
             nessun_morto = False
             print(f'  --> {abitante.nome} è morto!')
         # reset azione della notte appena trascorsa
