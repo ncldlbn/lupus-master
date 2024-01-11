@@ -56,8 +56,8 @@ input("\nPremi ENTER per passare alla notte successiva...")
 vittoria = False
 villaggio.turno = 1
 
+os.system('clear')
 while not vittoria:
-    os.system('clear')
 
     print('----------------------------------')
     print(f'TURNO {villaggio.turno}')
