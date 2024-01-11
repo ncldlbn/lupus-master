@@ -688,22 +688,26 @@ class Untore(Giocatore):
     def indica(self, villaggio):
         if self.status == 'Vivo':
             while True:
-                giocatori_indicabili = [g.ID for g in villaggio.abitanti if g.status == 'Vivo' and g.contagiato == False and g.ruolo != 'Untore']
-                if giocatori_indicabili:
-                    altro_giocatore = input(f"{self.ruolo}: ")
-                    if altro_giocatore:
-                        altro_giocatore = int(altro_giocatore)
-                        if altro_giocatore in giocatori_indicabili:
-                            indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
-                            indicato.contagiato = True
-                            break
-                        else:
-                            print("Giocatore indicato non valido")
-                    else:
-                        print("L'untore deve indicare un giocatore da contagiare:")
-                else:
-                    input(f"{self.ruolo}: ---- (Non ci sono più giocatori da contagiare)")
+                if 'Illusionista' in self.indicato_da or 'Stregone' in self.indicato_da:
+                    input(f"{self.ruolo}: ---- (BLOCCATO)")
                     break
+                else:
+                    giocatori_indicabili = [g.ID for g in villaggio.abitanti if g.status == 'Vivo' and g.contagiato == False and g.ruolo != 'Untore']
+                    if giocatori_indicabili:
+                        altro_giocatore = input(f"{self.ruolo}: ")
+                        if altro_giocatore:
+                            altro_giocatore = int(altro_giocatore)
+                            if altro_giocatore in giocatori_indicabili:
+                                indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
+                                indicato.contagiato = True
+                                break
+                            else:
+                                print("Giocatore indicato non valido")
+                        else:
+                            print("L'untore deve indicare un giocatore da contagiare:")
+                    else:
+                        input(f"{self.ruolo}: ---- (Non ci sono più giocatori da contagiare)")
+                        break
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
