@@ -6,8 +6,10 @@ from moduli.ruoli import *
 
 class Villaggio:
     def __init__(self):
-        self.abitanti = []
         self.turno = 1
+        self.abitanti = []
+        self.ruoli = []
+        self.giocatori = []
 
 def read_setup(setup_file):
     ### Inserire controllo N ruoli == N Giocatori!!
@@ -93,6 +95,9 @@ def assegnazione_ruoli(giocatori, lista_ruoli):
         if ruoli[ID] == 'Ammaestratore':
             nuovo_ruolo = Ammaestratore(ID, giocatori[ID])
         villaggio.abitanti.append(nuovo_ruolo)
+
+    villaggio.giocatori = giocatori
+    villaggio.ruoli = ruoli
     return villaggio
 
 def recap(villaggio):

@@ -39,13 +39,13 @@ for numero, nome in giocatori.items():
 print('----------------------------------')
 print('NOTTE')
 print('----------------------------------')
-    
+
 villaggio = assegnazione_ruoli(giocatori, ruoli)
 
 print('----------------------------------')
 print('GIORNO')
 print('----------------------------------')
-input('Nominate un SINDACO del villaggio...')
+input('Nominate un sindaco del villaggio...')
 print('----------------------------------')
 
 input("\nPremi ENTER per passare alla notte successiva...")

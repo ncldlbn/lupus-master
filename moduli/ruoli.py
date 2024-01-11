@@ -224,15 +224,15 @@ class Beccamorto(Giocatore):
                         break
                     else:
                         richiesta = input(f"{self.ruolo}: ")
-                        if richiesta: # in lista_ruoli:
-                            risposta = [altro_giocatore.status for altro_giocatore in villaggio.abitanti if altro_giocatore.ruolo == richiesta]
+                        if richiesta in villaggio.ruoli.values():
+                            risposta = [g.status for g in villaggio.abitanti if g.ruolo == richiesta]
                             if 'Vivo' in risposta:
                                 print(f'  --> {richiesta} è vivo')
                             else:
                                 print(f'  --> {richiesta} è morto')
                             break
                         else:
-                            print("Il medium deve chiedere se un ruolo è ancora in vita. Inserisci il ruolo: ")
+                            print("Il beccamorto deve chiedere se un ruolo è ancora in vita. Inserisci un ruolo valido: ")
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
 
@@ -440,7 +440,8 @@ class Boia(Giocatore):
         if self.status == 'Vivo':
             if self.attivato == False:
                 # se il boia può agire
-                while True:
+                condizione_uscita = False
+                while not condizione_uscita:
                     if 'Illusionista' in self.indicato_da:
                         input(f"{self.ruolo}: ---- (BLOCCATO)")
                         break
@@ -454,13 +455,18 @@ class Boia(Giocatore):
                         giocatori_indicabili = [altro_giocatore.ID for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Vivo' and altro_giocatore.ruolo != 'Boia']
                         if altro_giocatore in giocatori_indicabili:
                             indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
+                            # itera fino a che viene inserito un ruolo valido
                             ruolo_indovinato = input('  --> Indovina il ruolo: ')
-                            if ruolo_indovinato == indicato.ruolo: # and ruolo_indovinato in lista_ruoli:
-                                indicato.indicato_da.append('Boia')
-                                self.attivato = True
-                            else:
-                                self.indicato_da.append('Boia')
-                            break
+                            while not condizione_uscita:
+                                if ruolo_indovinato in villaggio.ruoli.values():
+                                    if ruolo_indovinato == indicato.ruolo:
+                                        indicato.indicato_da.append('Boia')
+                                        self.attivato = True
+                                    else:
+                                        self.indicato_da.append('Boia')
+                                    condizione_uscita = True
+                                else:
+                                    ruolo_indovinato = input("  --> Ruolo non valido. Indovina il ruolo: ")
                         else:
                             print("Giocatore indicato non valido")
             else:
@@ -489,7 +495,8 @@ class Wendigo(Giocatore):
 
     def indica(self, villaggio):
         if self.status == 'Vivo':
-            while True:
+            condizione_uscita = False
+            while not condizione_uscita:
                 if 'Illusionista' in self.indicato_da or 'Stregone' in self.indicato_da:
                     input(f"{self.ruolo}: ---- (BLOCCATO)")
                     break
@@ -499,10 +506,15 @@ class Wendigo(Giocatore):
                     giocatori_indicabili = [altro_giocatore.ID for altro_giocatore in villaggio.abitanti if altro_giocatore.status == 'Vivo' and altro_giocatore.ruolo != 'Wendigo']
                     if altro_giocatore in giocatori_indicabili:
                         indicato = next((x for x in villaggio.abitanti if x.ID == altro_giocatore), None)
+                        # itera fino a che viene inserito un ruolo valido
                         ruolo_indovinato = input('  --> Indovina il ruolo: ')
-                        if ruolo_indovinato == indicato.ruolo: # and ruolo_indovinato in lista_ruoli:
-                            indicato.indicato_da.append('Wendigo')
-                        break
+                        while not condizione_uscita:
+                            if ruolo_indovinato in villaggio.ruoli.values():
+                                if ruolo_indovinato == indicato.ruolo:
+                                    indicato.indicato_da.append('Wendigo')
+                                condizione_uscita = True
+                            else:
+                                ruolo_indovinato = input("  --> Ruolo non valido. Indovina il ruolo: ")
                     else:
                         print("Giocatore indicato non valido")
                 else:
