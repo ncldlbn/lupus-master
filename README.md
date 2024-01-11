@@ -24,6 +24,7 @@ I ruoli implementati nella versione 1.0 sono:
 - Rubavittoria
   - Matto
   - Wendigo
+  - Untore
 
 ## Installazione
 1. Verificare che sia installato python3
