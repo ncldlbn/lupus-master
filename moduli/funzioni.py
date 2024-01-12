@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import yaml
-import os
+import time
 from moduli.ruoli import *
 
 class Villaggio:
@@ -146,3 +146,22 @@ def condizioni_vittoria(villaggio):
         return True
     else:
         return False
+
+def timer(duration):
+    start_time = time.time()
+    try:
+        while True:
+            elapsed_time = time.time() - start_time
+            remaining_time = max(duration - elapsed_time, 0)
+
+            minutes, seconds = divmod(int(remaining_time), 60)
+            timer_display = f"{minutes:02d}:{seconds:02d}"
+
+            print(f"Timer: {timer_display}           skip=CTRL+C", end='\r')
+
+            if elapsed_time >= duration:
+                print("\nTempo scaduto!")
+                break
+
+    except KeyboardInterrupt:
+        print("\nTempo scaduto!")

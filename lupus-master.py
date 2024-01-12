@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from moduli.funzioni import read_setup, recap, assegnazione_ruoli, condizioni_vittoria
+from moduli.funzioni import read_setup, recap, assegnazione_ruoli, condizioni_vittoria, timer
 
 # -----------------------------------------------------------------------------
 # Menu principale
@@ -114,6 +114,9 @@ while not vittoria:
     print('----------------------------------')
     print('GIORNO')
     print('----------------------------------')
+
+    timer(600)
+
     while True:
         rogo = input("Giocatore da mandare al rogo: ")
         if rogo:
