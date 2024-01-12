@@ -435,7 +435,7 @@ class Boia(Giocatore):
        self.visto_come = 'Cattivo'
        self.priorita = 140
        self.attivato = False
-       self.assassini = ['Giustiziere', 'Wendigo', 'Ammaestratore']
+       self.assassini = ['Giustiziere', 'Wendigo', 'Ammaestratore', 'Boia']
 
     def indica(self, villaggio):
         if self.status == 'Vivo':
