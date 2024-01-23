@@ -123,19 +123,9 @@ def condizioni_vittoria(villaggio):
     altri_giocatori_vivi = [g.ID for g in villaggio.abitanti if g.ruolo != 'Lupo' and g.fazione != 'Rubavittoria' and g.status == 'Vivo']
     matto_morto_al_rogo = [matto.ID for matto in villaggio.abitanti if matto.ruolo == 'Matto' and matto.al_rogo == True]
     tutti_contagiati = all(abitante.contagiato for abitante in villaggio.abitanti if abitante.status == 'Vivo')
-    # condizione vittoria dei villici:
-    #   sono morti tutti i lupi e tutti i personaggi solitari
-    if not lupi_vivi and not rubavittoria_vivi:
-        print('I villici vincono la partita!\n')
-        return True
-    # condizione vittoria dei lupi:
-    #   sono morti tutti i personaggi solitari e il numero di lupi == numero altri giocatori
-    elif not rubavittoria_vivi and (len(lupi_vivi) == len(altri_giocatori_vivi)):
-        print('I lupi vincono la partita!\n')
-        return True
     # condizione vittoria dei personaggi solitari:
     #   ogni personaggio solitario ha delle proprie condizioni di vittoria
-    elif tutti_contagiati:
+    if tutti_contagiati:
         print('L\'untore vince la partita!\n')
         return True
     elif wendigo_vivo and len(vivi) == 2:
@@ -143,6 +133,16 @@ def condizioni_vittoria(villaggio):
         return True
     elif matto_morto_al_rogo:
         print('Il matto vince la partita!\n')
+        return True
+    # condizione vittoria dei villici:
+    #   sono morti tutti i lupi e tutti i personaggi solitari
+    elif (not rubavittoria_vivi) and (not lupi_vivi):
+        print('I villici vincono la partita!\n')
+        return True
+    # condizione vittoria dei lupi:
+    #   sono morti tutti i personaggi solitari e il numero di lupi == numero altri giocatori
+    elif (not rubavittoria_vivi) and (len(lupi_vivi) == len(altri_giocatori_vivi)):
+        print('I lupi vincono la partita!\n')
         return True
     else:
         return False
