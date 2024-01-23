@@ -11,6 +11,14 @@ class Villaggio:
         self.ruoli = []
         self.giocatori = []
 
+    def condizioni_vittoria(self):
+        self.vivi = len([g.ID for g in self.abitanti if g.status == 'Vivo'])
+        self.lupi_vivi = len([lupi.ID for lupi in self.abitanti if lupi.ruolo == 'Lupo' and lupi.status == 'Vivo'])
+        self.wendigo_vivo = bool([w.ID for w in self.abitanti if w.ruolo == 'Wendigo' and w.status == 'Vivo'])
+        self.matto_vivo = bool([m.ID for m in self.abitanti if m.ruolo == 'Matto' and m.status == 'Vivo'])
+        self.matto_morto_al_rogo = bool([matto.ID for matto in self.abitanti if matto.ruolo == 'Matto' and matto.al_rogo == True])
+        self.tutti_contagiati = all(abitante.contagiato for abitante in self.abitanti if abitante.status == 'Vivo')
+
 def read_setup(setup_file):
     ### Inserire controllo N ruoli == N Giocatori!!
     with open(setup_file, 'r') as file:
@@ -114,34 +122,27 @@ def recap(villaggio):
         for abitante in sorted(villaggio.abitanti, key=lambda x: x.ID):
             print(f"{abitante.ID:<2} {abitante.nome:<10} {abitante.ruolo:<15} {abitante.status:<5}")
 
-def condizioni_vittoria(villaggio):
-    vivi = [g.ID for g in villaggio.abitanti if g.status == 'Vivo']
-    lupi_vivi = [lupi.ID for lupi in villaggio.abitanti if lupi.ruolo == 'Lupo' and lupi.status == 'Vivo']
-    wendigo_vivo = [w.ID for w in villaggio.abitanti if w.ruolo == 'Wendigo' and w.status == 'Vivo']
-    rubavittoria_vivi = [r.ID for r in villaggio.abitanti if r.fazione == 'Rubavittoria' and r.status == 'Vivo']
-    wendigo_vivo = [w.ID for w in villaggio.abitanti if w.ruolo == 'Wendigo' and w.status == 'Vivo']
-    altri_giocatori_vivi = [g.ID for g in villaggio.abitanti if g.ruolo != 'Lupo' and g.fazione != 'Rubavittoria' and g.status == 'Vivo']
-    matto_morto_al_rogo = [matto.ID for matto in villaggio.abitanti if matto.ruolo == 'Matto' and matto.al_rogo == True]
-    tutti_contagiati = all(abitante.contagiato for abitante in villaggio.abitanti if abitante.status == 'Vivo')
+def condizioni_vittoria(v):
+    v.condizioni_vittoria()
     # condizione vittoria dei personaggi solitari:
     #   ogni personaggio solitario ha delle proprie condizioni di vittoria
-    if tutti_contagiati:
+    if v.tutti_contagiati:
         print('L\'untore vince la partita!\n')
         return True
-    elif wendigo_vivo and len(vivi) == 2:
+    elif v.wendigo_vivo and v.vivi == 2:
         print('Il wendigo vince la partita!\n')
         return True
-    elif matto_morto_al_rogo:
+    elif v.matto_morto_al_rogo:
         print('Il matto vince la partita!\n')
         return True
     # condizione vittoria dei villici:
     #   sono morti tutti i lupi e tutti i personaggi solitari
-    elif (not rubavittoria_vivi) and (not lupi_vivi):
+    elif (not v.lupi_vivi) and (not v.wendigo_vivo) and (not v.matto_vivo) and (not v.matto_morto_al_rogo):
         print('I villici vincono la partita!\n')
         return True
     # condizione vittoria dei lupi:
     #   sono morti tutti i personaggi solitari e il numero di lupi == numero altri giocatori
-    elif (not rubavittoria_vivi) and (len(lupi_vivi) == len(altri_giocatori_vivi)):
+    elif (v.lupi_vivi == (v.vivi - v.lupi_vivi)) and (not v.wendigo_vivo) and (not v.matto_vivo) and (not v.matto_morto_al_rogo):
         print('I lupi vincono la partita!\n')
         return True
     else:

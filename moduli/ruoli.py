@@ -35,6 +35,10 @@ class Villico(Giocatore):
             return True
         else:
             return False
+        
+    def vittoria(self, villaggio):
+        test = villaggio.condizioni_vittoria()
+        print(test)
 
 class Lupo(Giocatore):
     def __init__(self, ID, nome):
@@ -81,6 +85,9 @@ class Lupo(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Cavaliere(Giocatore):
     def __init__(self, ID, nome):
@@ -121,6 +128,9 @@ class Cavaliere(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Veggente(Giocatore):
     def __init__(self, ID, nome):
@@ -168,6 +178,9 @@ class Veggente(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Medium(Giocatore):
     def __init__(self, ID, nome):
@@ -203,6 +216,9 @@ class Medium(Giocatore):
                             print("Il medium deve indicare un giocatore morto del quale vuole conoscere la fazione: ")
         else:
             input(f"{self.ruolo}: ---- (MORTO)")
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Beccamorto(Giocatore):
     def __init__(self, ID, nome):
@@ -246,6 +262,9 @@ class Beccamorto(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Giustiziere(Giocatore):
     def __init__(self, ID, nome):
@@ -294,6 +313,9 @@ class Giustiziere(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Insinuo(Giocatore):
     def __init__(self, ID, nome):
@@ -334,6 +356,9 @@ class Insinuo(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Illusionista(Giocatore):
     def __init__(self, ID, nome):
@@ -371,6 +396,9 @@ class Illusionista(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Stregone(Giocatore):
     def __init__(self, ID, nome):
@@ -407,6 +435,9 @@ class Stregone(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Matto(Giocatore):
     def __init__(self, ID, nome):
@@ -426,6 +457,9 @@ class Matto(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Boia(Giocatore):
     def __init__(self, ID, nome):
@@ -484,6 +518,9 @@ class Boia(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Wendigo(Giocatore):
     def __init__(self, ID, nome):
@@ -530,6 +567,9 @@ class Wendigo(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Ammaestratore(Giocatore):
     def __init__(self, ID, nome):
@@ -579,6 +619,9 @@ class Ammaestratore(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Indemoniato(Giocatore):
     def __init__(self, ID, nome):
@@ -619,6 +662,9 @@ class Indemoniato(Giocatore):
         villaggio.abitanti.remove(self)
         villaggio.abitanti.append(nuovo_ruolo)
         return True
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Mitomane(Giocatore):
     def __init__(self, ID, nome):
@@ -674,6 +720,9 @@ class Mitomane(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass
 
 class Untore(Giocatore):
     def __init__(self, ID, nome):
@@ -720,3 +769,6 @@ class Untore(Giocatore):
             return True
         else:
             return False
+    
+    def vittoria(self, villaggio):
+        pass

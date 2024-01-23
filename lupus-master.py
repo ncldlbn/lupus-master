@@ -137,8 +137,11 @@ while not vittoria:
     input("\nPremi ENTER per passare alla notte successiva...")
 
     # verifica le condizioni di vittoria:
-    if condizioni_vittoria(villaggio):
-        break
+    for personaggio in villaggio.abitanti:
+        if personaggio.vittoria(villaggio):
+            break
+    # if condizioni_vittoria(villaggio):
+    #     break
 
     villaggio.turno += 1
 
